@@ -1,0 +1,66 @@
+############################
+# GLOBAL
+############################
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.log
+
+############################
+# PYTHON / BACKEND
+############################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# ML / Model artifacts
+models/
+results/
+dataset/
+test_images/
+*.h5
+*.pt
+*.onnx
+*.pkl
+
+# Temporary files
+temp_*.jpg
+temp_*.png
+
+############################
+# VIDEO / MEDIA FILES
+############################
+vedio sample/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+############################
+# NODE / FRONTEND
+############################
+node_modules/
+dist/
+build/
+.vite/
+
+############################
+# IDE / EDITOR
+############################
+.vscode/
+.idea/
+*.iml
+
+############################
+# OS / SYSTEM
+############################
+coverage/
+.cache/
