@@ -11,7 +11,7 @@ import tensorflow as tf
 from datetime import datetime
 
 # Import custom modules
-from utils import (
+from .utils import (
     load_class_indices,
     preprocess_image,
     format_disease_name,
@@ -20,8 +20,13 @@ from utils import (
     validate_image,
     enhance_image_for_analysis
 )
-from blip_fallback import BLIPImageAnalyzer, create_llm_prompt_from_blip
-from llm_advisor import AgricultureAdvisor
+from .blip_fallback import BLIPImageAnalyzer, create_llm_prompt_from_blip
+try:
+    from .llm_advisor_hf import AgricultureAdvisor
+    print("✅ Using Hugging Face LLM Advisor")
+except ImportError:
+    from .llm_advisor import AgricultureAdvisor
+    print("⚠️ Using local Ollama LLM Advisor")
 
 
 class PlantDiseaseInferencePipeline:
@@ -183,19 +188,23 @@ class PlantDiseaseInferencePipeline:
             print(f"\n[3/3] Generating agricultural advice...")
         
         if self.use_llm and self.advisor is not None:
-            if source.startswith("BLIP"):
-                advice = self.advisor.get_advice_for_blip_analysis(
-                    visual_description,
-                    blip_result
-                )
-            else:
-                # Extract plant type
-                plant_type = final_diagnosis.split(' - ')[0] if ' - ' in final_diagnosis else "plant"
-                advice = self.advisor.get_advice_for_cnn_prediction(
-                    final_diagnosis,
-                    final_confidence,
-                    plant_type
-                )
+            try:
+                if source.startswith("BLIP"):
+                    advice = self.advisor.get_advice_for_blip_analysis(
+                        visual_description,
+                        blip_result
+                    )
+                else:
+                    # Extract plant type
+                    plant_type = final_diagnosis.split(' - ')[0] if ' - ' in final_diagnosis else "plant"
+                    advice = self.advisor.get_advice_for_cnn_prediction(
+                        final_diagnosis,
+                        final_confidence,
+                        plant_type
+                    )
+            except Exception as e:
+                print(f"⚠️ LLM advice generation failed: {e}")
+                advice = self._create_basic_advice(final_diagnosis, final_confidence)
         else:
             advice = self._create_basic_advice(final_diagnosis, final_confidence)
         

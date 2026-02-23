@@ -232,6 +232,7 @@ Format your response as a helpful agricultural advisory."""
 
 # Example usage and testing
 if __name__ == "__main__":
+    import os
     print("=" * 70)
     print("BLIP IMAGE ANALYZER - TEST MODULE")
     print("=" * 70)

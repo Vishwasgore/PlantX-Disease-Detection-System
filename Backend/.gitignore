@@ -1,0 +1,27 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+
+# Training / local folders
+dataset/
+results/
+test_images/
+
+# Local notes
+how_to_run.txt
+
+# Temp files
+temp_*.jpg
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
